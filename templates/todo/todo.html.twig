@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TodoController!{% endblock %}
+
+{% block body %}
+
+            <h2 class="text-center mt-5">Ma To do</h2>
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12"> 
+                <div class="text-center"><a href="{{path('app_todo_create')}}" class="btn btn-danger my-5">Nouvelle Todo</a>
+                <table class="table table-hover">
+                <tr>
+                    <th>Titre</th>
+                    <th>Catégorie</th>
+                    <th>Description</th>
+                    <th>Crée le</th>
+                    <th>Modifié le</th>
+                    <th>Pour le</th>
+                    <th>Actions</th>
+                </tr>
+                    
+                    <tr>
+                        <td>{{ todo.title}}</td>
+                        <td>{{ todo.category.name }}</td>
+                        <td>{{ todo.content }}</td>
+                        <td>{{ todo.CreatedAt|date("d/m/Y") }}</td>
+                        <td>{{ todo.UpdatedAt|date("d/m/Y") }}</td>
+                        <td>{{ todo.DateFor|date("d/m/Y") }}</td>
+                        <td>
+                             <a href="{{path('app_todo_edit', {'id':todo.id } )}}" class="btn btn-info">Editer</a>
+                        </td>
+                        <td>
+                        <a href="{{path('app_todo_delete', {'id':todo.id } )}}" class="btn btn-danger">Supprimer</a>
+                        </td>
+
+                    </tr>
+                   
+                </table>           
+
+                <div class="text-center"><a href="{{path('app_todo')}}" class="btn btn-danger my-5"> Retour</a></div>
+                </div> 
+            </div>
+        </div>
+
+                {# <dl>
+                    <dt>Titre</dt>
+                        <dd>{{ todo.title}}</dd>
+                    <dt>Catégorie</dt>
+                        <dd>{{ todo.category.name }}</dd>
+                    <dt>Description</dt>
+                        <dd>{{ todo.content }}</dd>
+                    <dt>Crée le</dt>
+                        <dd>{{ todo.CreatedAt|date("d/m/Y") }}</dd>
+                    <dt>Modifié le</dt>
+                        <dd>{{ todo.UpdatedAt|date("d/m/Y") }}</dd>
+                    <dt>Actions</dt>
+                        <dd><a href="" class="btn btn-info">Editer</a></dd>
+                </dl> #}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TodoController!{% endblock %}
+
+{% block body %}
+
+            <h2 class="text-center">Ma To do List</h2>
+        <div class="container">
+            <div class="row mt-5 text-center">
+                <div class="col-12"> 
+                <table class="table table-hover table-dark">
+                <a href="{{path('app_todo_create')}}" class="btn btn-danger my-5">Nouvelle Todo</a>
+                <tr>
+                    <th>Titre</th>
+                    <th>Catégorie</th>
+                    <th>Crée le</th>
+                    <th>Actions</th>
+                </tr>
+                    {% for todo in todos %}
+                    <tr>
+                        <td>{{ todo.title}}</td>
+                        <td>{{ todo.category.name }}</td>
+                        <td>{{ todo.CreatedAt|date("d/m/Y") }}</td>
+                        <td>
+                            <a href="{{path('app_todo_detail', {'id':todo.id } )}}" class="btn btn-success">Voir</a> 
+                            <a href="{{path('app_todo_edit', {'id':todo.id } )}}" class="btn btn-info">Editer</a>
+                        </td>
+                        <td>
+                        <a href="{{path('app_todo_delete', {'id':todo.id } )}}" class="btn btn-danger">Supprimer</a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </table>           
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    {# <p>{{ todo.UpdatedAt|date("d/m/Y") }}</p>
+                    <p>{{ todo.DateFor|date("d/m/Y") }}</p> #}
+
+                </div> 
+            </div>
+        </div>
+
+{% endblock %}
