@@ -9,11 +9,17 @@
            <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         {% endblock %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
     </head>
     <body>
+        {% block navbar %}
+            {% include '_navbar.html.twig' %}
+        {% endblock %}
+
         {% block body %}{% endblock %}
+
+        {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="{{asset('js/bootstrap.min.js')}}"></script>
+        {% endblock %}
     </body>
 </html>

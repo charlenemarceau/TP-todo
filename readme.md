@@ -159,3 +159,14 @@ composer req sensio/framework-extra-bundle
 ### Méthode 1 
 - Un lien depuis la page d'accueil 
 - Ici le lien
+## Méthode 2
+- lien dans la page update
+- on ajoute une confirmation en javascript
+- __NB__ : Attention à l'emplacement de `{% block javascripts %}{% endblock %}`
+#
+# Ahouter une navbar
+- un fichier _navbar.html.twig, crée avec une navbar Bootstrap
+    - un titre
+    - un bouton accueil
+    - un menu déroulant
+- inclure dans base.html.twig dans un {% block navbar%}
