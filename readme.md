@@ -170,3 +170,129 @@ composer req sensio/framework-extra-bundle
     - un bouton accueil
     - un menu déroulant
 - inclure dans base.html.twig dans un {% block navbar%}
+
+#
+# Contraintes de formulaires
+## Dans TodoFormType
+
+Voir : Pour inihiber le contrôle HTML 5
+```php
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Todo::class,
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ]
+        ]);
+    }
+``` 
+
+Voir les contraintes des champs.
+Ici, dans le cas  où un champs est considéré comme nullable = false dans la database.
+> voir empty_data.
+```php
+    ->add('title', TextType::class, [
+                'label' => 'Un titre en quelques mots',
+                'empty_data' => "",
+``` 
+## Dans l'entité Todo
+Ne pas oublier d'importer la classe mais pas Mozart\Assert. Copier/coller depuis la doc.
+Un exemple :
+```php
+    # La classe
+    use Symfony\Component\Validator\Constraints as Assert;
+
+    /**
+     * @Assert\NotBlank(message = "Ce champ ne peut être vide.")
+     * @Assert\Length(
+     *      min=15,
+     *      minMessage = "Au minimum {{ limit }} caractères.")
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
+``` 
+
+#
+# Version de l'appli avec SQLite
+## Procédure à suivre: 
+1. Installer SQLite Studio
+2. Définir la connexion dans le fichier .env : 
+   ```bash
+   DATABASE_URL="sqlite:///%kernel.project_dir%/var/todolist.db"
+   ```
+3. Créer ce fichier
+   ```bash
+   symfony console doctrine:database:create
+   ```
+4. Créer une migration pour une base de donnée SQLite
+```bash
+    # virer les migrations actuelles
+    symfony console make:migration
+    symfony console doctrine:migrations:migrate
+```
+5. Fixtures
+```bash
+symfony console doctrine:fixtures:load
+```
+6. Tester et voir dans SQLite 
+
+#
+# PostGreSQL
+#
+## Installation 
+```yaml
+url : https://www.postgresql.org/download/windows/
+``` 
+DLL dans php.ini
+```bash
+# 2 extensions à décommenter
+extension=pdo_pqsql
+extension=pgsql
+```
+
+3. Installer l'interface pgAdmin
+4. Configurer Symfony
+```yaml
+#dans config/package/doctrine.yaml, ajouter :
+dbal:  
+    driver: 'pdo_pgsql'
+    charset: utf8
+```
+5. connexion à posgresql dans le fichier .env
+   ```bash
+   DATABASE_URL="postgresql://postgresql:root@127.0.0.1:5432/db_pg_todolist"
+   ```
+6. créer la base de données
+```bash
+symfony console doctrine:database:create
+```
+7. Migration
+```bash
+ # virer les migrations actuelles
+ symfony console make:migration
+ symfony console doctrine:migrations:migrate
+```
+8. Fixtures
+```bash
+symfony console doctrine:fixtures:load
+```
+## Migrations et fixtures en prod
+Allez voir dans `config/bundles.php`
+```php
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['all' => true],
+```
+
+Aller dans composer.json et décaler cette ligne dans "require"
+```js
+    "doctrine/doctrine-fixtures-bundle": "^3.4"
+``` 
+Puis on ajoute une structure dans scripts :
+```js
+"scripts": {
+        "compile" : [
+            "php bin/console doctrine:migrations:migrate",
+            "php bin/console doctrine:fixtures:load --no-interaction --env=PROD"
+        ],
+```
